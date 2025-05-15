@@ -28,11 +28,12 @@ const LetterInput: React.FC<LetterInputProps> = ({
         justifyContent: 'center',
         fontSize: '1.5rem',
         fontWeight: 600,
-        backgroundColor: disabled ? 'grey.100' : 'white',
+        backgroundColor: isSelected ? 'primary.light' : (disabled ? 'grey.100' : 'white'),
         color: disabled ? 'grey.500' : 'text.primary',
         cursor: disabled ? 'default' : 'text',
         '&:hover': {
           borderColor: disabled ? 'grey.300' : 'primary.main',
+          backgroundColor: disabled ? 'grey.100' : (isSelected ? 'primary.light' : 'grey.50'),
         },
         transition: 'all 0.2s ease-in-out',
       }}
