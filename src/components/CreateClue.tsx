@@ -33,7 +33,7 @@ const CreateClue: React.FC = () => {
 
     // Encode clue for URL safety, but not obfuscation
     const clueParam = encodeURIComponent(displayClue);
-    const url = `${window.location.origin}/solve?clue=${clueParam}&a=${encoded}${pipeLocations.length === 2 ? `&p=${encodeAnswer(pipeLocations.join(','))}` : ''}${enableLetterHints ? '&h=1' : ''}`;
+    const url = `${window.location.origin}/Cryptic/solve?clue=${clueParam}&a=${encoded}${pipeLocations.length === 2 ? `&p=${encodeAnswer(pipeLocations.join(','))}` : ''}${enableLetterHints ? '&h=1' : ''}`;
     setShareUrl(url);
   };
 
