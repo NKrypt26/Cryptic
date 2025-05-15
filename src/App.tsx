@@ -20,8 +20,8 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
-    // If we're at the root, redirect to create
-    if (location.pathname === '/') {
+    // If we're at the root or /Cryptic, redirect to create
+    if (location.pathname === '/' || location.pathname === '/Cryptic') {
       navigate('/create');
     }
   }, [location.pathname, navigate]);
