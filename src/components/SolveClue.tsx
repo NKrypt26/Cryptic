@@ -59,29 +59,24 @@ const SolveClue: React.FC = () => {
         }, '');
         setIsCorrect(reconstructedAnswer.toLowerCase() === answer.toLowerCase());
       } else if (e.key === 'Backspace') {
-        if (selectedIndex > 0) {
-          // Find the previous unrevealed letter
+        if (userAnswer[selectedIndex]) {
+          // If current box has content, clear it and stay in place
+          const newAnswer = [...userAnswer];
+          newAnswer[selectedIndex] = '';
+          setUserAnswer(newAnswer);
+        } else if (selectedIndex > 0) {
+          // If current box is empty, find the previous unrevealed letter
           let prevIndex = selectedIndex - 1;
           while (prevIndex >= 0 && revealedLetters.has(prevIndex)) {
             prevIndex--;
           }
           if (prevIndex >= 0) {
-            // Clear current letter and move back
+            // Clear previous letter and move back
             const newAnswer = [...userAnswer];
-            newAnswer[selectedIndex] = '';
+            newAnswer[prevIndex] = '';
             setUserAnswer(newAnswer);
             setSelectedIndex(prevIndex);
-          } else if (userAnswer[selectedIndex]) {
-            // If at the start, just clear the current letter
-            const newAnswer = [...userAnswer];
-            newAnswer[selectedIndex] = '';
-            setUserAnswer(newAnswer);
           }
-        } else if (userAnswer[selectedIndex]) {
-          // If at the start, just clear the current letter
-          const newAnswer = [...userAnswer];
-          newAnswer[selectedIndex] = '';
-          setUserAnswer(newAnswer);
         }
       } else if (e.key === 'ArrowLeft' && selectedIndex > 0) {
         // Find the previous unrevealed letter
