@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { AppBar, Toolbar, Container, Box, ThemeProvider, createTheme } from '@mui/material';
 import CreateClue from './components/CreateClue';
 import SolveClue from './components/SolveClue';
@@ -16,44 +16,39 @@ const theme = createTheme({
 });
 
 function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   useEffect(() => {
-    document.title = 'Cryptic';
-  }, []);
+    // If we're at the root, redirect to create
+    if (location.pathname === '/') {
+      navigate('/create');
+    }
+  }, [location.pathname, navigate]);
 
   return (
     <ThemeProvider theme={theme}>
-      <Router>
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar 
-            position="static" 
-            color="default" 
-            elevation={1}
-            sx={{ 
-              backgroundColor: 'white',
-              borderBottom: '1px solid rgba(0, 0, 0, 0.12)'
-            }}
-          >
-            <Toolbar sx={{ minHeight: 64 }}>
-              <Link 
-                to="/" 
-                style={{ 
-                  textDecoration: 'none',
-                  display: 'flex',
-                  alignItems: 'center'
-                }}
-              >
-                <Logo />
-              </Link>
-            </Toolbar>
-          </AppBar>
-          <Container maxWidth="lg" sx={{ mt: 4 }}>
-            <Routes>
-              <Route path="/" element={<CreateClue />} />
-              <Route path="/solve" element={<SolveClue />} />
-            </Routes>
-          </Container>
-        </Box>
-      </Router>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar 
+          position="static" 
+          color="default" 
+          elevation={1}
+          sx={{ 
+            backgroundColor: 'white',
+            borderBottom: '1px solid rgba(0, 0, 0, 0.12)'
+          }}
+        >
+          <Toolbar sx={{ minHeight: 64 }}>
+            <Logo />
+          </Toolbar>
+        </AppBar>
+        <Container maxWidth="lg" sx={{ mt: 4 }}>
+          <Routes>
+            <Route path="/create" element={<CreateClue />} />
+            <Route path="/solve" element={<SolveClue />} />
+          </Routes>
+        </Container>
+      </Box>
     </ThemeProvider>
   );
 }

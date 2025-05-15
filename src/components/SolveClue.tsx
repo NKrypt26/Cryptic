@@ -122,7 +122,7 @@ const SolveClue: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedIndex, userAnswer, revealedLetters]);
+  }, [selectedIndex, userAnswer, revealedLetters, answer, wordLengths]);
 
   const getLetterCounts = (answer: string): string => {
     const words = answer.split(' ');
@@ -182,7 +182,6 @@ const SolveClue: React.FC = () => {
             key={index}
             value={userAnswer[index]}
             isSelected={index === selectedIndex}
-            index={index}
             onClick={() => setSelectedIndex(index)}
             disabled={revealedLetters.has(index)}
           />
