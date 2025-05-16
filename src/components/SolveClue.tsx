@@ -18,6 +18,7 @@ const SolveClue: React.FC = () => {
   const [enableLetterHints, setEnableLetterHints] = useState(false);
   const [revealedLetters, setRevealedLetters] = useState<Set<number>>(new Set());
   const [hintsUsed, setHintsUsed] = useState(0);
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     try {
@@ -252,17 +253,40 @@ const SolveClue: React.FC = () => {
               gap: 0,
               mb: 3,
               cursor: 'text',
+              position: 'relative',
             }}
             onClick={() => {
-              // Focus the container to enable keyboard input
-              const container = document.activeElement;
-              if (container instanceof HTMLElement) {
-                container.focus();
+              setIsFocused(true);
+              // Focus the hidden input to trigger mobile keyboard
+              const hiddenInput = document.getElementById('hidden-input');
+              if (hiddenInput instanceof HTMLElement) {
+                hiddenInput.focus();
+              }
+            }}
+            onBlur={(e) => {
+              // Only blur if the related target is not within our component
+              if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                setIsFocused(false);
               }
             }}
             tabIndex={0}
           >
             {renderLetterBoxes()}
+            <input
+              id="hidden-input"
+              type="text"
+              style={{
+                position: 'absolute',
+                opacity: 0,
+                pointerEvents: 'none',
+                width: 0,
+                height: 0,
+                padding: 0,
+                border: 'none',
+                outline: 'none',
+              }}
+              onBlur={() => setIsFocused(false)}
+            />
           </Box>
           <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
             <Button
