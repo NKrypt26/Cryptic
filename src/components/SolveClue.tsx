@@ -18,7 +18,6 @@ const SolveClue: React.FC = () => {
   const [enableLetterHints, setEnableLetterHints] = useState(false);
   const [revealedLetters, setRevealedLetters] = useState<Set<number>>(new Set());
   const [hintsUsed, setHintsUsed] = useState(0);
-  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     try {
@@ -256,17 +255,10 @@ const SolveClue: React.FC = () => {
               position: 'relative',
             }}
             onClick={() => {
-              setIsFocused(true);
               // Focus the hidden input to trigger mobile keyboard
               const hiddenInput = document.getElementById('hidden-input');
               if (hiddenInput instanceof HTMLElement) {
                 hiddenInput.focus();
-              }
-            }}
-            onBlur={(e) => {
-              // Only blur if the related target is not within our component
-              if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-                setIsFocused(false);
               }
             }}
             tabIndex={0}
@@ -285,7 +277,6 @@ const SolveClue: React.FC = () => {
                 border: 'none',
                 outline: 'none',
               }}
-              onBlur={() => setIsFocused(false)}
             />
           </Box>
           <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
