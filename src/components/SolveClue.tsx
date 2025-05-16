@@ -143,18 +143,17 @@ const SolveClue: React.FC = () => {
   const handleLetterHint = () => {
     if (!enableLetterHints) return;
 
-    // Find all unrevealed letters
+    // Find all unrevealed letters (including those filled by user)
     const unrevealedIndices = userAnswer
-      .map((letter, index) => ({ letter, index }))
-      .filter(({ letter, index }) => !letter && !revealedLetters.has(index))
-      .map(({ index }) => index);
+      .map((_, index) => index)
+      .filter(index => !revealedLetters.has(index));
 
     if (unrevealedIndices.length === 0) return;
 
     // Pick a random unrevealed letter
     const randomIndex = unrevealedIndices[Math.floor(Math.random() * unrevealedIndices.length)];
     
-    // Reveal the letter
+    // Reveal the letter (this will overwrite any user input)
     const newAnswer = [...userAnswer];
     newAnswer[randomIndex] = answer[randomIndex].toUpperCase();
     setUserAnswer(newAnswer);
