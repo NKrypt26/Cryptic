@@ -1,54 +1,48 @@
-import { useEffect } from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { AppBar, Toolbar, Container, Box, ThemeProvider, createTheme } from '@mui/material';
+import { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { ThemeProvider, CssBaseline, IconButton, Box } from '@mui/material';
+import { darkTheme, lightTheme } from './theme';
 import CreateClue from './components/CreateClue';
 import SolveClue from './components/SolveClue';
-import Logo from './components/Logo';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#BA68C8',
-      light: '#CE93D8',
-      dark: '#9C27B0',
-    },
-  },
-});
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 function App() {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
-  useEffect(() => {
-    // If we're at the root or /Cryptic, redirect to create
-    if (location.pathname === '/' || location.pathname === '/Cryptic') {
-      navigate('/create');
-    }
-  }, [location.pathname, navigate]);
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar 
-          position="static" 
-          color="default" 
-          elevation={1}
-          sx={{ 
-            backgroundColor: 'white',
-            borderBottom: '1px solid rgba(0, 0, 0, 0.12)'
+    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+      <CssBaseline />
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 16,
+          right: 16,
+          zIndex: 1000,
+        }}
+      >
+        <IconButton 
+          onClick={toggleTheme} 
+          color="inherit"
+          sx={{
+            backgroundColor: 'background.paper',
+            '&:hover': {
+              backgroundColor: 'action.hover',
+            },
           }}
         >
-          <Toolbar sx={{ minHeight: 64 }}>
-            <Logo />
-          </Toolbar>
-        </AppBar>
-        <Container maxWidth="lg" sx={{ mt: 4 }}>
-          <Routes>
-            <Route path="/create" element={<CreateClue />} />
-            <Route path="/solve" element={<SolveClue />} />
-          </Routes>
-        </Container>
+          {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
       </Box>
+      <Routes>
+        <Route path="/" element={<CreateClue />} />
+        <Route path="/create" element={<CreateClue />} />
+        <Route path="/solve" element={<SolveClue />} />
+      </Routes>
     </ThemeProvider>
   );
 }
